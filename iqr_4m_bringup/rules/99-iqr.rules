@@ -1,0 +1,5 @@
+KERNEL=="ttyTHS1", MODE:="0777", SYMLINK+="imu_com"
+KERNEL=="ttyTHS4", MODE:="0777", SYMLINK+="gps_com"
+KERNEL=="ttyUSB1", MODE:="0777", SYMLINK+="th_sensor_com"
+
+KERNEL=="js*", ATTRS{idVendor}=="045e", ATTRS{idProduct}=="028e", SYMLINK="input/jy4"

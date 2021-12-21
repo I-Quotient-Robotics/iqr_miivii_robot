@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="iqr_scout_robot">
+
+  <xacro:property name="package_name" value="iqr_4m_description"/>
+
+  <!-- Include SCOUT ROBOT -->
+  <include filename="$(find scout_description)/urdf/scout_v2.xacro"/>
+
+  <!-- Include accessories -->
+  <xacro:include filename="$(find ${package_name})/urdf/sensor_support.xacro"/>
+
+  <!-- IQR sensor support -->
+  <xacro:sensor_support package="${package_name}" parent="mid_mount">
+    <origin xyz="-0.150 0 0" rpy="0 0 0"/>
+  </xacro:sensor_support>
+
+  <!-- forward gps link -->
+  <link name="forward_gps_link">
+    <visual>
+      <origin xyz="0.0 0.0 -0.116" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://${package_name}/urdf/mesh/forward_gps_antenna.stl"/>
+      </geometry>
+      <material name="">
+        <color rgba="1.0 1.0 0.9 1"/>
+      </material>
+    </visual>
+  </link>
+  <joint name="forward_gps_link_joint" type="fixed">
+    <origin xyz="0.500 0.0 0.116" rpy="0 0 0"/>
+    <parent link="sensor_support_link"/>
+    <child link="forward_gps_link"/>
+  </joint>
+
+</robot>

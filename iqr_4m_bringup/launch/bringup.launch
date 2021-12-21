@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<launch>
+
+  <arg name="robot_type" default="bunker"/>
+
+  <!-- Robot Description -->
+  <arg name="model" default="$(find xacro)/xacro --inorder $(find iqr_4m_description)/urdf/iqr_$(arg robot_type)_robot.urdf.xacro"/>
+  <param name="robot_description" command="$(arg model)"/>
+
+  <!--node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/-->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+  <!-- robot -->
+  <include file="$(find bunker_base)/launch/base.launch">
+    <arg name="pub_description" value="false"/>
+    <arg name="enable_ekf" default="true"/>
+  </include>
+
+  <!-- Lidar -->
+  <include file="$(find ouster_ros)/ouster.launch">
+    <arg name="sensor_hostname" value="192.168.33.7"/>
+    <arg name="metadata" default="meta.json"/>
+    <arg name="timestamp_mode" default="TIME_FROM_PTP_1588"/>
+  </include>
+
+  <!-- pointcloud to laserscan -->
+  <include file="$(find iqr_4m_bringup)/launch/pointcloud_to_laserscan.launch.xml">
+  </include>
+
+  <!-- GPS -->
+  <include file="$(find nmea_ros_driver)/launch/bringup.launch">
+    <arg name="pub_gps_odom_tf" default="false"/>
+  </include> 
+
+  <!-- UBNKER IMU -->
+  <node pkg="jy901_driver" type="jy901_driver_node" name="jy901_driver_node" output="screen">
+    <param name="port" type="string" value="/dev/imu_com"/>
+    <param name="baudrate" type="int" value="115200"/>
+    <param name="looprate" type="int" value="50"/>
+  </node>
+
+  <!-- SCOUT IMU -->
+  <!-- <node pkg="sanchi_amov" type="sanchi_amov" name="imu" output="screen">
+    <param name="port" value="/dev/imu_com"/>
+    <param name="model" value="100D2"/>
+    <param name="baud" value="115200"/>
+  </node> -->
+
+  <!-- th sensor -->
+  <include file="$(find th_sensor_driver)/launch/bringup.launch">
+  </include>
+
+</launch>
