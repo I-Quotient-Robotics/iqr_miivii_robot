@@ -30,7 +30,7 @@
     <!-- laser link -->
     <link name="os_sensor"/>
     <joint name="lidar_joint" type="fixed">
-      <origin xyz="0.0 0.0 0.47322" rpy="0 0 0"/>
+      <origin xyz="0.0 0.0 0.43722" rpy="0 0 0"/>
       <parent link="${prefix}_link"/>
       <child link="os_sensor"/>
     </joint>
